@@ -1,25 +1,37 @@
 // import Button from "./Button";
 import { useState, useEffect } from "react";
 
-function App() {
-
-  const [counter, setValue] = useState(0);
-  const [keyword, setKeyword] = useState("");
-  const onClickCounter = () => setValue((prev) => prev + 1);
-  const onValueUpdate = (event) => setKeyword(event.target.value);
-  console.log("i run all the time");
-
+function Hello() {
   useEffect(() => {
-    if(keyword !== "" && keyword.length>4){
-        console.log(`keyword: ${keyword}`);
-    }
-  }, [keyword]);
+    console.log("created!!!");
+    //cleanup fucntion!!!!!!
+    //컴포넌트가 destroy될 때 뭔가 할 수 있도록 해줌
+    return () => console.log("destroyed ㅠㅠ");
+  }, []);
+  return <h1>hello</h1>;
+}
+
+//위의 Hello functional component와 같은 원리!
+function Hi() {
+  function hiFn() {
+    console.log("created!!");
+    return byFn;
+  }
+  function byFn() {
+    console.log("destroyed ㅜㅜ");
+  }
+  useEffect(hiFn, []);
+  return <h1>Hello</h1>;
+}
+
+function App() {
+  const [showing, setShowing] = useState(false);
+  const onClickBtn = () => setShowing((a) => !a);
 
   return (
     <div className="App">
-      <input value={keyword} onChange={onValueUpdate} type="text" placeholder="Search here"/>
-      <h1>{ counter }</h1>
-      <button onClick={onClickCounter}>click me</button>
+      {showing ? <Hi /> : null}
+      <button onClick={onClickBtn}>{showing ? "Hide" : "Show"}</button>
     </div>
   );
 }
